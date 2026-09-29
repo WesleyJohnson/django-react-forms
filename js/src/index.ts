@@ -14,7 +14,7 @@ export {
     registerWidget,
 } from './registry';
 export type { SlotProps, WidgetBehavior, WidgetProps } from './registry';
-export { registerAdapter } from './telepath';
+export { registerAdapter, telepath } from './telepath';
 export { Bridge } from './bridge';
 export { ChoiceDef, FieldDef, FormDef, WidgetDef } from './adapters';
 export { evaluateCondition } from './conditions';
