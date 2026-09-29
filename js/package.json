@@ -1,0 +1,71 @@
+{
+    "name": "django-react-forms",
+    "version": "0.1.0-dev.0",
+    "description": "Render Django forms as React Hook Form forms. Django declares the form; React draws it.",
+    "license": "MIT",
+    "author": "Wesley Johnson",
+    "keywords": [
+        "django",
+        "react",
+        "forms",
+        "telepath",
+        "react-hook-form"
+    ],
+    "type": "module",
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        },
+        "./quill": {
+            "types": "./dist/quill.d.ts",
+            "import": "./dist/quill.js"
+        },
+        "./styles.css": "./src/styles.css"
+    },
+    "files": [
+        "dist",
+        "src/styles.css",
+        "README.md"
+    ],
+    "scripts": {
+        "build": "tsup",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "typecheck": "tsc --noEmit",
+        "format": "prettier --write 'src/**/*.{ts,tsx}' 'tests/**/*.{ts,tsx}'"
+    },
+    "dependencies": {
+        "telepath-unpack": "^0.0.4"
+    },
+    "peerDependencies": {
+        "quill": "^2.0.0",
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0",
+        "react-hook-form": "^7.53.0"
+    },
+    "peerDependenciesMeta": {
+        "quill": {
+            "optional": true
+        }
+    },
+    "devDependencies": {
+        "@testing-library/jest-dom": "^6.6.0",
+        "@testing-library/react": "^16.0.0",
+        "@testing-library/user-event": "^14.5.0",
+        "@types/react": "^18.3.0",
+        "@types/react-dom": "^18.3.0",
+        "jsdom": "^25.0.0",
+        "prettier": "^3.3.0",
+        "quill": "^2.0.2",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "react-hook-form": "^7.53.0",
+        "tsup": "^8.3.0",
+        "typescript": "^5.6.2",
+        "vitest": "^2.1.0"
+    }
+}

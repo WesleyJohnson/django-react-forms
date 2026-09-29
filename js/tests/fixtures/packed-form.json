@@ -1,0 +1,319 @@
+{
+    "_args": [
+        "ReactForm",
+        {
+            "form": {
+                "_args": [
+                    [
+                        {
+                            "_args": [
+                                {
+                                    "choices": null,
+                                    "condition": null,
+                                    "disabled": false,
+                                    "empty_value": "",
+                                    "field_type": "CharField",
+                                    "help_text": "A short name",
+                                    "label": "Title",
+                                    "max_length": 40,
+                                    "min_length": null,
+                                    "name": "p-title",
+                                    "readonly": null,
+                                    "required": true,
+                                    "value": "Marine Biology",
+                                    "widget": {
+                                        "_args": ["TextInput", null, {}, "", "", ""],
+                                        "_type": "dreact.Widget"
+                                    }
+                                }
+                            ],
+                            "_type": "dreact.FormField"
+                        },
+                        {
+                            "_args": [
+                                {
+                                    "choices": [
+                                        ["free", "Free"],
+                                        ["paid", "Paid"]
+                                    ],
+                                    "condition": null,
+                                    "disabled": false,
+                                    "empty_value": null,
+                                    "field_type": "ChoiceField",
+                                    "help_text": "",
+                                    "label": "Kind",
+                                    "max_length": null,
+                                    "min_length": null,
+                                    "name": "p-kind",
+                                    "readonly": null,
+                                    "required": true,
+                                    "value": "paid",
+                                    "widget": {
+                                        "_args": ["Select", null, {}, "", "", ""],
+                                        "_type": "dreact.Widget"
+                                    }
+                                }
+                            ],
+                            "_type": "dreact.FormField"
+                        },
+                        {
+                            "_args": [
+                                {
+                                    "choices": null,
+                                    "condition": null,
+                                    "disabled": false,
+                                    "empty_value": "",
+                                    "field_type": "CharField",
+                                    "help_text": "",
+                                    "label": "Notes",
+                                    "max_length": null,
+                                    "min_length": null,
+                                    "name": "p-notes",
+                                    "readonly": null,
+                                    "required": false,
+                                    "value": null,
+                                    "widget": {
+                                        "_args": ["Textarea", null, {}, "", "", ""],
+                                        "_type": "dreact.Widget"
+                                    }
+                                }
+                            ],
+                            "_type": "dreact.FormField"
+                        },
+                        {
+                            "_args": [
+                                {
+                                    "choices": null,
+                                    "condition": {
+                                        "kind__eq": "paid"
+                                    },
+                                    "disabled": false,
+                                    "empty_value": null,
+                                    "field_type": "IntegerField",
+                                    "help_text": "",
+                                    "label": "Fee",
+                                    "max_length": null,
+                                    "min_length": null,
+                                    "name": "p-fee",
+                                    "readonly": null,
+                                    "required": false,
+                                    "value": 5,
+                                    "widget": {
+                                        "_args": ["NumberInput", null, {}, "", "", ""],
+                                        "_type": "dreact.Widget"
+                                    }
+                                }
+                            ],
+                            "_type": "dreact.FormField"
+                        },
+                        {
+                            "_args": [
+                                {
+                                    "choices": null,
+                                    "condition": null,
+                                    "disabled": false,
+                                    "empty_value": null,
+                                    "field_type": "DateTimeField",
+                                    "help_text": "",
+                                    "label": "Starts",
+                                    "max_length": null,
+                                    "min_length": null,
+                                    "name": "p-starts",
+                                    "readonly": null,
+                                    "required": false,
+                                    "value": {
+                                        "_args": ["2026-01-02 09:30:00"],
+                                        "_type": "dreact.String"
+                                    },
+                                    "widget": {
+                                        "_args": ["DateTimeInput", null, {}, "", "", ""],
+                                        "_type": "dreact.Widget"
+                                    }
+                                }
+                            ],
+                            "_type": "dreact.FormField"
+                        },
+                        {
+                            "_args": [
+                                {
+                                    "choices": null,
+                                    "condition": null,
+                                    "disabled": false,
+                                    "empty_value": null,
+                                    "field_type": "BooleanField",
+                                    "help_text": "",
+                                    "label": "Agree",
+                                    "max_length": null,
+                                    "min_length": null,
+                                    "name": "p-agree",
+                                    "readonly": null,
+                                    "required": false,
+                                    "value": null,
+                                    "widget": {
+                                        "_args": ["CheckboxInput", null, {}, "", "", ""],
+                                        "_type": "dreact.Widget"
+                                    }
+                                }
+                            ],
+                            "_type": "dreact.FormField"
+                        },
+                        {
+                            "_args": [
+                                {
+                                    "choices": [
+                                        ["mon", "Monday"],
+                                        ["tue", "Tuesday"]
+                                    ],
+                                    "condition": null,
+                                    "disabled": false,
+                                    "empty_value": null,
+                                    "field_type": "MultipleChoiceField",
+                                    "help_text": "",
+                                    "label": "Days",
+                                    "max_length": null,
+                                    "min_length": null,
+                                    "name": "p-days",
+                                    "readonly": null,
+                                    "required": false,
+                                    "value": "[\"mon\"]",
+                                    "widget": {
+                                        "_args": [
+                                            {
+                                                "_id": 7,
+                                                "_val": "CheckboxSelectMultiple"
+                                            },
+                                            null,
+                                            {},
+                                            "",
+                                            "",
+                                            ""
+                                        ],
+                                        "_type": "dreact.Widget"
+                                    }
+                                }
+                            ],
+                            "_type": "dreact.FormField"
+                        },
+                        {
+                            "_args": [
+                                {
+                                    "choices": null,
+                                    "condition": null,
+                                    "disabled": false,
+                                    "empty_value": "",
+                                    "field_type": "TagField",
+                                    "help_text": "",
+                                    "label": "Tags",
+                                    "max_length": null,
+                                    "min_length": null,
+                                    "name": "p-tags",
+                                    "readonly": null,
+                                    "required": false,
+                                    "value": "[\"sea\", \"science\"]",
+                                    "widget": {
+                                        "_args": [
+                                            "TagInput",
+                                            "TagInput",
+                                            {
+                                                "maxTagLength": null,
+                                                "maxTags": 3
+                                            },
+                                            "",
+                                            "",
+                                            ""
+                                        ],
+                                        "_type": "dreact.Widget"
+                                    }
+                                }
+                            ],
+                            "_type": "dreact.FormField"
+                        },
+                        {
+                            "_args": [
+                                {
+                                    "choices": {
+                                        "_args": [],
+                                        "_type": "dreact.ChoiceList"
+                                    },
+                                    "condition": null,
+                                    "disabled": false,
+                                    "empty_value": null,
+                                    "field_type": "ModelMultipleChoiceField",
+                                    "help_text": "",
+                                    "label": "Groups",
+                                    "max_length": null,
+                                    "min_length": null,
+                                    "name": "p-groups",
+                                    "readonly": null,
+                                    "required": false,
+                                    "value": null,
+                                    "widget": {
+                                        "_args": [
+                                            {
+                                                "_ref": 7
+                                            },
+                                            null,
+                                            {},
+                                            "",
+                                            "",
+                                            ""
+                                        ],
+                                        "_type": "dreact.Widget"
+                                    }
+                                }
+                            ],
+                            "_type": "dreact.FormField"
+                        },
+                        {
+                            "_args": [
+                                {
+                                    "choices": null,
+                                    "condition": null,
+                                    "disabled": false,
+                                    "empty_value": null,
+                                    "field_type": "FileField",
+                                    "help_text": "",
+                                    "label": "Upload",
+                                    "max_length": null,
+                                    "min_length": null,
+                                    "name": "p-upload",
+                                    "readonly": null,
+                                    "required": false,
+                                    "value": null,
+                                    "widget": {
+                                        "_args": ["ClearableFileInput", null, {}, "", "", ""],
+                                        "_type": "dreact.Widget"
+                                    }
+                                }
+                            ],
+                            "_type": "dreact.FormField"
+                        }
+                    ],
+                    "/save/",
+                    "p",
+                    [
+                        {
+                            "fields": ["p-title", "p-kind", "p-notes"],
+                            "name": "About"
+                        },
+                        {
+                            "fields": [
+                                "p-fee",
+                                "p-starts",
+                                "p-agree",
+                                "p-days",
+                                "p-tags",
+                                "p-groups",
+                                "p-upload"
+                            ],
+                            "name": "Details"
+                        }
+                    ],
+                    false
+                ],
+                "_type": "dreact.Form"
+            }
+        }
+    ],
+    "_type": "dreact.Bridge"
+}

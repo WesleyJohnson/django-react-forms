@@ -1,0 +1,35 @@
+import copy
+
+from django.forms import widgets
+from telepath import register
+
+from django_react_forms.adapters import WidgetAdapter
+
+
+@register(adapter=WidgetAdapter())
+class ReactComponentWidget(widgets.Widget):
+    """
+    A widget drawn by a React component registered under ``component`` (see ``registerWidget`` in
+    the JS package). ``props`` are passed to that component along with the field's value/onChange.
+    """
+
+    def __init__(self, attrs=None, *, component, props=None):
+        self.component = component
+        self.props = props or {}
+        super().__init__(attrs)
+
+    def __deepcopy__(self, memo):
+        # Widget.__deepcopy__ only copies attrs; copy props too so per-form tweaks don't leak
+        # into the field class's shared widget.
+        obj = super().__deepcopy__(memo)
+        obj.props = copy.deepcopy(self.props, memo)
+        return obj
+
+
+class TagInput(ReactComponentWidget):
+    """Pill/badge input for a list of free-text tags. Pair it with ``TagField``."""
+
+    component_name = 'TagInput'
+
+    def __init__(self, attrs=None, props=None):
+        super().__init__(attrs, component=self.component_name, props=props)

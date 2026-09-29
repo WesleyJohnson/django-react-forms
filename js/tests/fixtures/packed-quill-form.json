@@ -1,0 +1,43 @@
+{
+    "_args": [
+        "ReactForm",
+        {
+            "form": {
+                "_args": [
+                    [
+                        {
+                            "_args": [
+                                {
+                                    "choices": null,
+                                    "condition": null,
+                                    "disabled": false,
+                                    "empty_value": "",
+                                    "field_type": "QuillFormField",
+                                    "help_text": "",
+                                    "label": "Bio",
+                                    "max_length": null,
+                                    "min_length": null,
+                                    "name": "bio",
+                                    "readonly": null,
+                                    "required": false,
+                                    "value": "{\"delta\": {\"ops\": [{\"insert\": \"Hi\\n\"}]}, \"html\": \"<p>Hi</p>\"}",
+                                    "widget": {
+                                        "_args": ["QuillWidget", null, {}, "", "", ""],
+                                        "_type": "dreact.Widget"
+                                    }
+                                }
+                            ],
+                            "_type": "dreact.FormField"
+                        }
+                    ],
+                    "/save/",
+                    null,
+                    null,
+                    false
+                ],
+                "_type": "dreact.Form"
+            }
+        }
+    ],
+    "_type": "dreact.Bridge"
+}

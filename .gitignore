@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+dist/
+build/
+.pytest_cache/
+.ruff_cache/
+
+# JS
+node_modules/
+js/dist/
+*.tsbuildinfo
+coverage/
+
+# Env / OS / editors
+.env
+.DS_Store
+.idea/
+.vscode/
+
+# Example build output (rebuild with npm run build in the example's frontend/)
+examples/**/static/demo/app.js
+examples/**/static/demo/style.css

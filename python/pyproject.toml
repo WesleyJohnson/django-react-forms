@@ -1,0 +1,48 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "django-react-forms"
+version = "0.1.0.dev0"
+description = "Render Django forms as React Hook Form forms. Django declares the form; React draws it."
+readme = "../README.md"
+license = "MIT"
+license-files = ["../LICENSE"]
+requires-python = ">=3.10"
+authors = [{ name = "Wesley Johnson" }]
+keywords = ["django", "react", "forms", "telepath", "react-hook-form"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: Django",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.2",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+    "Django>=4.2",
+    "telepath>=0.3.1",
+]
+
+[project.optional-dependencies]
+quill = ["django-quill-editor>=0.1.40", "nh3>=0.2.14"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["django_react_forms"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["UP038"]  # deprecated rule

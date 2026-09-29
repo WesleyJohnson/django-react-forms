@@ -1,0 +1,83 @@
+{
+    "description": "Shared by the JS (src/js/conditions.test.ts) and Python (core/tests/test_conditions.py) tests so the client and server always agree on which fields are visible. `values` are keyed by the watched field's unprefixed name.",
+    "cases": [
+        { "name": "eq matches", "condition": { "kind__eq": "paid" }, "values": { "kind": "paid" }, "visible": true },
+        {
+            "name": "eq does not match",
+            "condition": { "kind__eq": "paid" },
+            "values": { "kind": "free" },
+            "visible": false
+        },
+        {
+            "name": "eq with the watched value missing",
+            "condition": { "kind__eq": "paid" },
+            "values": {},
+            "visible": false
+        },
+        { "name": "in matches", "condition": { "kind__in": ["a", "b"] }, "values": { "kind": "b" }, "visible": true },
+        {
+            "name": "in does not match",
+            "condition": { "kind__in": ["a", "b"] },
+            "values": { "kind": "c" },
+            "visible": false
+        },
+        {
+            "name": "in with a non-list condition value",
+            "condition": { "kind__in": "a" },
+            "values": { "kind": "a" },
+            "visible": false
+        },
+        {
+            "name": "multiple keys are ANDed (all true)",
+            "condition": { "a__eq": "1", "b__eq": "2" },
+            "values": { "a": "1", "b": "2" },
+            "visible": true
+        },
+        {
+            "name": "multiple keys are ANDed (one false)",
+            "condition": { "a__eq": "1", "b__eq": "2" },
+            "values": { "a": "1", "b": "x" },
+            "visible": false
+        },
+        {
+            "name": "unknown operator fails open",
+            "condition": { "kind__gt": "1" },
+            "values": { "kind": "0" },
+            "visible": true
+        },
+        { "name": "malformed key fails open", "condition": { "nodunder": "1" }, "values": {}, "visible": true },
+        {
+            "name": "field names may contain double underscores",
+            "condition": { "a__b__eq": "x" },
+            "values": { "a__b": "x" },
+            "visible": true
+        },
+        {
+            "name": "a number never equals a string",
+            "condition": { "n__eq": "3" },
+            "values": { "n": 3 },
+            "visible": false
+        },
+        {
+            "name": "a boolean never equals a string",
+            "condition": { "ok__eq": "true" },
+            "values": { "ok": true },
+            "visible": false
+        },
+        {
+            "name": "prefixed watched field",
+            "condition": { "kind__eq": "paid" },
+            "prefix": "p",
+            "values": { "p-kind": "paid" },
+            "visible": true
+        },
+        {
+            "name": "prefixed watched field ignores the unprefixed key",
+            "condition": { "kind__eq": "paid" },
+            "prefix": "p",
+            "values": { "kind": "paid" },
+            "visible": false
+        },
+        { "name": "empty condition is visible", "condition": {}, "values": {}, "visible": true }
+    ]
+}
