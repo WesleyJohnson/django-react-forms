@@ -392,13 +392,21 @@ export function ReactForm(givenProps: ReactFormProps) {
                     void form.handleSubmit(onFormSubmit, onFormError)(e);
                 }}
             >
-                {grouped
-                    ? fieldGroups.map((group) => (
-                          <Fieldset key={group.name} name={group.name}>
-                              {renderFields(formFields.filter((f) => group.fields.includes(f.name)))}
-                          </Fieldset>
-                      ))
-                    : renderFields(formFields)}
+                {grouped ? (
+                    <>
+                        {fieldGroups.map((group) => (
+                            <Fieldset key={group.name} name={group.name}>
+                                {renderFields(formFields.filter((f) => group.fields.includes(f.name)))}
+                            </Fieldset>
+                        ))}
+                        {/* A field no group lists is still drawn, so it can't vanish or leave an error nobody sees */}
+                        {renderFields(
+                            formFields.filter((f) => !fieldGroups.some((g) => g.fields.includes(f.name))),
+                        )}
+                    </>
+                ) : (
+                    renderFields(formFields)
+                )}
                 {rootError ? <FormError message={rootError} /> : null}
                 <SubmitButton
                     label={messages.submit}

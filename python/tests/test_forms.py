@@ -553,3 +553,41 @@ class CustomPiecesTests(SimpleTestCase):
         self.assertEqual(
             json.loads(data), {'_type': 'dreact.Bridge', '_args': ['Dashboard', {'title': 'Hello'}]}
         )
+
+
+class UngroupedFieldsTests(SimpleTestCase):
+    def form(self, groups, prefix=None):
+        class Grouped(SampleForm):
+            field_groups = groups
+            calls = []
+
+            def on_ungrouped_fields(self, names):
+                self.calls.append(names)
+
+        return Grouped(fetch_url='/x', prefix=prefix)
+
+    def test_names_the_fields_no_group_lists(self):
+        form = self.form([{'name': 'A', 'fields': ['title', 'count']}])
+        self.assertEqual(
+            form.get_ungrouped_field_names(), ['agree', 'kind', 'many', 'numbers', 'tags']
+        )
+
+    def test_the_hook_is_called_with_them_when_the_form_is_packed(self):
+        form = self.form([{'name': 'A', 'fields': ['title']}])
+        pack_fields(form)
+        self.assertEqual(form.calls[0][:2], ['count', 'agree'])
+
+    def test_nothing_is_reported_when_every_field_is_grouped(self):
+        form = self.form([{'name': 'A', 'fields': list(SampleForm.base_fields)}])
+        pack_fields(form)
+        self.assertEqual(form.get_ungrouped_field_names(), [])
+        self.assertEqual(form.calls, [])
+
+    def test_a_form_without_groups_has_no_ungrouped_fields(self):
+        form = SampleForm(fetch_url='/x')
+        self.assertEqual(form.get_ungrouped_field_names(), [])
+
+    def test_a_prefixed_form_reports_unprefixed_names(self):
+        form = self.form([{'name': 'A', 'fields': ['title']}], prefix='p')
+        pack_fields(form)
+        self.assertIn('count', form.calls[0])

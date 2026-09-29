@@ -503,7 +503,39 @@ describe('ReactForm', () => {
         );
         expect(screen.getByText('Group one')).toBeInTheDocument();
         expect(screen.getByText('A')).toBeInTheDocument();
-        expect(screen.queryByText('B')).not.toBeInTheDocument();
+    });
+
+    it('draws fields no group lists, after the groups, and outside any fieldset', () => {
+        const { container } = renderForm(
+            [field({ name: 'a', label: 'A' }), field({ name: 'b', label: 'B' })],
+            {},
+            { fieldGroups: [{ name: 'Group one', fields: ['a'] }] },
+        );
+        const b = screen.getByLabelText(/^B/);
+        expect(container.querySelector('fieldset')?.contains(b)).toBe(false);
+        expect(
+            container.querySelector('fieldset')!.compareDocumentPosition(b) &
+                Node.DOCUMENT_POSITION_FOLLOWING,
+        ).toBeTruthy();
+    });
+
+    it('shows the error of a required field that no group lists', async () => {
+        renderForm(
+            [field({ name: 'a', label: 'A' }), field({ name: 'b', label: 'B', required: true })],
+            {},
+            { fieldGroups: [{ name: 'Group one', fields: ['a'] }] },
+        );
+        await submit();
+        expect(await screen.findByText('B is required.')).toBeInTheDocument();
+    });
+
+    it('ignores a group entry naming a field the form does not have', () => {
+        renderForm(
+            [field({ name: 'a', label: 'A' })],
+            {},
+            { fieldGroups: [{ name: 'G', fields: ['a', 'ghost'] }] },
+        );
+        expect(screen.getByText('A')).toBeInTheDocument();
     });
 
     it('hides the submit button when hideSubmit is set', () => {

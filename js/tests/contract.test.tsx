@@ -83,13 +83,18 @@ describe('a form from Django, mounted', () => {
         vi.unstubAllGlobals();
     });
 
-    it('does not draw fields that no field group lists', async () => {
+    it('still draws a field that no field group lists, after the groups', async () => {
         const grouped = JSON.parse(JSON.stringify(packed));
         const groups = grouped._args[1].form._args[3];
         groups[1].fields = groups[1].fields.filter((name: string) => name !== 'p-days');
         addToPage(grouped);
         await mount();
-        expect(screen.queryByRole('group', { name: /Days/ })).not.toBeInTheDocument();
+        const days = screen.getByRole('group', { name: /Days/ });
+        expect(days).toBeInTheDocument();
+        // It comes after the last fieldset in the document
+        const fieldsets = screen.getAllByRole('group').filter((g) => g.tagName === 'FIELDSET');
+        const lastFieldset = fieldsets[fieldsets.length - 1];
+        expect(lastFieldset.compareDocumentPosition(days) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     });
 
     it('does not mount the same payload twice', async () => {

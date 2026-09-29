@@ -136,6 +136,20 @@ class ReactFormMixin(ReactRenderableMixin):
                 self.fields[name].disabled = disabled
                 self.fields[name].required = required
 
+    def get_ungrouped_field_names(self):
+        """Fields no ``field_groups`` entry lists (the client draws them after the groups)."""
+        groups = getattr(self, 'field_groups', None)
+        if not groups:
+            return []
+        grouped = {name for group in groups for name in group['fields']}
+        return [name for name in self.fields if name not in grouped]
+
+    def on_ungrouped_fields(self, names):
+        """
+        Called when the form is packed and some fields are in no group. Does nothing by default;
+        override it to log or warn if you consider a missing group a mistake.
+        """
+
     def get_context(self):
         # {{ form }} draws the React mount, not Django's fields
         return self.get_mount_context()
@@ -170,6 +184,11 @@ class PackedForm:
                 {**group, 'fields': [f'{form.prefix}-{name}' for name in group['fields']]}
                 for group in field_groups
             ]
+
+        if field_groups and hasattr(form, 'get_ungrouped_field_names'):
+            ungrouped = form.get_ungrouped_field_names()
+            if ungrouped:
+                form.on_ungrouped_fields(ungrouped)
 
         return [
             'dreact.Form',

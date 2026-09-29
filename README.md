@@ -180,8 +180,9 @@ registerComponent('Dashboard', ({ title }) => <h1>{title}</h1>);
 
 ## Behavior worth knowing
 
-- **Field groups must list every field.** With `field_groups`, a field that isn't in any group is
-  not drawn (its initial value is still submitted).
+- **Fields in no group are still drawn**, after the groups. Nothing is silently dropped. To hide a
+  field on purpose, give it a `HiddenInput` or leave it out of the form. Override
+  `on_ungrouped_fields(names)` on the form if you'd like to log or warn about it.
 - **Conditions.** Keys are `<field>__eq` / `<field>__in`, several are ANDed, unknown operators fail
   open (the field stays visible), and comparison is strict (`3` never equals `"3"`). The same
   rules run on the client and in `ReactFormMixin.full_clean`, and both suites are tested against
