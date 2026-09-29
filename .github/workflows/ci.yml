@@ -21,6 +21,8 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - run: pip install "Django==${{ matrix.django }}.*" "telepath>=0.3.1" django-quill-editor "nh3>=0.2.14"
+      - name: Packaged README/LICENSE match the root copies
+        run: diff README.md python/README.md && diff LICENSE python/LICENSE
       - run: python -m django test tests
         working-directory: python
         env:

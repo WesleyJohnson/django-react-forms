@@ -28,3 +28,8 @@ cd js && npm install && npm test && npm run typecheck && npm run build
 The core is deliberately small: standard Django widgets, conditional fields, tags, files, and a
 registry for everything else. Design-system components, extra rich-text editors and the like are
 better as separate packages that use `registerWidget` / `registerSlot`.
+
+## Keeping the packaged README/LICENSE in sync
+
+`python/README.md` and `python/LICENSE` are copies of the root files (a package can't reference files
+outside its folder). After editing either root file, run `cp README.md LICENSE python/`. CI fails if they drift.
