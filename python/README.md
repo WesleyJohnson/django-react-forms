@@ -26,13 +26,13 @@ If you'd rather have web components than React, look at [django-formset](https:/
 
 ## Install
 
-> Not published yet. Until 0.1.0 is on PyPI and npm, install from a checkout of this repository:
-> `pip install ./python` and `npm install ./js`.
-
 ```bash
 pip install django-react-forms          # add [quill] for rich text
 npm install django-react-forms react react-dom react-hook-form
 ```
+
+Each [GitHub release](https://github.com/WesleyJohnson/django-react-forms/releases) also has the
+npm package as a tarball, which `npm install` accepts by URL.
 
 Requires Python 3.10+, Django 4.2 to 6.1 (Django 6 needs Python 3.12+), React 18.
 

@@ -15,10 +15,11 @@ jobs:
         run: |
           version="${GITHUB_REF_NAME#v}"
           python_version=$(sed -nE 's/^version = "(.*)"/\1/p' python/pyproject.toml | head -1)
+          module_version=$(sed -nE "s/^__version__ = '(.*)'/\1/p" python/django_react_forms/__init__.py)
           js_version=$(node -p "require('./js/package.json').version")
-          echo "tag=$version python=$python_version js=$js_version"
+          echo "tag=$version python=$python_version module=$module_version js=$js_version"
           # Final releases only: a prerelease is spelled differently in PEP 440 and semver
-          test "$python_version" = "$version" && test "$js_version" = "$version"
+          test "$python_version" = "$version" && test "$module_version" = "$version" && test "$js_version" = "$version"
       - name: Packaged README/LICENSE match the root copies
         run: for d in python js; do diff README.md $d/README.md && diff LICENSE $d/LICENSE; done
 

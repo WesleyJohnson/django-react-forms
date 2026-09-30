@@ -40,8 +40,6 @@ reference files outside its folder). After editing either root file, run
 A version tag publishes both packages (`.github/workflows/release.yml`):
 
 1. Move the `CHANGELOG.md` entry from "unreleased" to the version and date.
-   For the first release, also delete the "Not published yet" note under Install in `README.md` (then
-   `cp README.md python/ && cp README.md js/`).
 2. Set the same version in `python/pyproject.toml` and `js/package.json` (the release workflow
    checks that they match the tag).
 3. Commit, wait for CI to pass on `main`, then `git tag v0.1.0 && git push --tags`.
