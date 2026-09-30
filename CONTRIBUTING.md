@@ -52,4 +52,8 @@ One-time setup:
   `WesleyJohnson`, repository `django-react-forms`, workflow `release.yml`, environment `pypi`),
   and create a GitHub environment named `pypi` in the repository settings. No token is stored.
 - **npm:** publish the first version by hand (`cd js && npm publish --access public`), then add an
-  npm automation token as the repository secret `NPM_TOKEN` for later releases.
+  npm automation token as the repository secret `NPM_TOKEN` for later releases. Until that secret
+  exists the `npm` job skips itself (it can be re-run later from the Actions page).
+- **GitHub Release:** every tag also creates a release with the wheel, the sdist and the JS tarball
+  attached. The tarball installs without npm: point `package.json` at
+  `https://github.com/WesleyJohnson/django-react-forms/releases/download/v0.1.0/django-react-forms-0.1.0.tgz`.

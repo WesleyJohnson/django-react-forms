@@ -42,6 +42,36 @@ jobs:
         with:
           packages-dir: python/dist
 
+  github-release:
+    # The built files, attached to a GitHub Release. The JS tarball is also how to install the
+    # package before (or without) an npm release:
+    #   "django-react-forms": "https://github.com/<owner>/django-react-forms/releases/download/v<version>/django-react-forms-<version>.tgz"
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # create the release
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: pip install build
+      - run: python -m build
+        working-directory: python
+      - run: npm ci && npm run build && npm pack
+        working-directory: js
+      - name: Create the release with the built files
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes \
+            python/dist/* js/django-react-forms-*.tgz
+
   npm:
     needs: check
     runs-on: ubuntu-latest
@@ -49,18 +79,36 @@ jobs:
       contents: read
       id-token: write # lets npm record provenance for the published package
     steps:
+      # A job can't test a secret in its own `if`, so look at it in a step and skip the rest
+      - name: Is an npm token configured?
+        id: token
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -n "$NPM_TOKEN" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::NPM_TOKEN isn't set, so nothing was published to npm. Add the secret and re-run this job."
+          fi
       - uses: actions/checkout@v4
+        if: steps.token.outputs.present == 'true'
       - uses: actions/setup-node@v4
+        if: steps.token.outputs.present == 'true'
         with:
           node-version: 22
           registry-url: https://registry.npmjs.org
       - run: npm ci
+        if: steps.token.outputs.present == 'true'
         working-directory: js
       - run: npm test
+        if: steps.token.outputs.present == 'true'
         working-directory: js
       - run: npm run build
+        if: steps.token.outputs.present == 'true'
         working-directory: js
       - run: npm publish --provenance --access public
+        if: steps.token.outputs.present == 'true'
         working-directory: js
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
