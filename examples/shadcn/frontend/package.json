@@ -1,0 +1,32 @@
+{
+    "name": "django-react-forms-example-shadcn",
+    "private": true,
+    "type": "module",
+    "scripts": { "build": "vite build" },
+    "dependencies": {
+        "@radix-ui/react-checkbox": "^1.1.0",
+        "@radix-ui/react-label": "^2.1.0",
+        "@radix-ui/react-select": "^2.1.0",
+        "@radix-ui/react-slot": "^1.1.0",
+        "@radix-ui/react-switch": "^1.1.0",
+        "class-variance-authority": "^0.7.0",
+        "clsx": "^2.1.0",
+        "django-react-forms": "file:../../../js",
+        "lucide-react": "^0.460.0",
+        "quill": "2.0.2",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "react-hook-form": "^7.53.0",
+        "tailwind-merge": "^2.5.0"
+    },
+    "devDependencies": {
+        "@types/react": "^18.3.0",
+        "@types/react-dom": "^18.3.0",
+        "@vitejs/plugin-react": "^5.0.0",
+        "autoprefixer": "^10.4.0",
+        "postcss": "^8.4.0",
+        "tailwindcss": "^3.4.0",
+        "typescript": "^5.6.0",
+        "vite": "^7.0.0"
+    }
+}

@@ -5,7 +5,8 @@ export default defineConfig({
     build: {
         outDir: '../demo/static/demo',
         emptyOutDir: false,
-        lib: { entry: 'src/main.tsx', formats: ['es'], fileName: () => 'app.js' },
+        lib: { entry: 'src/main.tsx', formats: ['es'], fileName: () => 'basic.js' },
+        rollupOptions: { output: { assetFileNames: 'basic[extname]' } },
     },
     define: { 'process.env.NODE_ENV': '"production"' },
 });

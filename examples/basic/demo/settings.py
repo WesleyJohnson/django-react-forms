@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,9 +25,17 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'APP_DIRS': True,
-        'OPTIONS': {'context_processors': ['django.template.context_processors.request']},
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.request',
+                'demo.context.ui',
+            ]
+        },
     }
 ]
+
+# Which front end the pages load: 'basic' (plain HTML widgets) or 'shadcn' (see ../shadcn)
+DEMO_UI = os.environ.get('DEMO_UI', 'basic')
 
 DATABASES = {}  # the demo stores nothing
 STATIC_URL = 'static/'

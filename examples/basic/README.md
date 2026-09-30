@@ -11,6 +11,7 @@ cd frontend && npm install && npm run build && cd ..
 PYTHONPATH=../../python python manage.py runserver
 ```
 
-Open http://127.0.0.1:8000/. The pieces to read: `demo/forms.py` (plain Django forms),
+Open http://127.0.0.1:8000/. To see the same forms drawn with shadcn/ui and Tailwind instead, build
+`../shadcn/frontend` and start the server with `DEMO_UI=shadcn`. The pieces to read: `demo/forms.py` (plain Django forms),
 `demo/views.py` (the view mixin), `demo/templates/demo/form.html` (`{{ form }}`), and
 `frontend/src/main.tsx` (mounting).

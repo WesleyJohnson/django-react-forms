@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}django-react-forms demo{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'demo/style.css' %}">
+    <link rel="stylesheet" href="{% static 'demo/'|add:ui|add:'.css' %}">
 </head>
 <body>
     <main style="max-width: 44rem; margin: 2rem auto; padding: 0 1rem; font-family: system-ui, sans-serif;">
         {% block content %}{% endblock %}
     </main>
-    <script type="module" src="{% static 'demo/app.js' %}"></script>
+    <script type="module" src="{% static 'demo/'|add:ui|add:'.js' %}"></script>
 </body>
 </html>
