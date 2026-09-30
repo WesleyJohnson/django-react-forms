@@ -34,3 +34,22 @@ better as separate packages that use `registerWidget` / `registerSlot`.
 `python/` and `js/` each carry copies of the root `README.md` and `LICENSE` (a package can't
 reference files outside its folder). After editing either root file, run
 `cp README.md LICENSE python/ && cp README.md LICENSE js/`. CI fails if they drift.
+
+## Releasing
+
+A version tag publishes both packages (`.github/workflows/release.yml`):
+
+1. Move the `CHANGELOG.md` entry from "unreleased" to the version and date.
+   For the first release, also delete the "Not published yet" note under Install in `README.md` (then
+   `cp README.md python/ && cp README.md js/`).
+2. Set the same version in `python/pyproject.toml` and `js/package.json` (the release workflow
+   checks that they match the tag).
+3. Commit, wait for CI to pass on `main`, then `git tag v0.1.0 && git push --tags`.
+
+One-time setup:
+
+- **PyPI:** at pypi.org, add a *pending publisher* for project `django-react-forms` (owner
+  `WesleyJohnson`, repository `django-react-forms`, workflow `release.yml`, environment `pypi`),
+  and create a GitHub environment named `pypi` in the repository settings. No token is stored.
+- **npm:** publish the first version by hand (`cd js && npm publish --access public`), then add an
+  npm automation token as the repository secret `NPM_TOKEN` for later releases.

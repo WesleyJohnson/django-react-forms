@@ -32,6 +32,12 @@ dependencies = [
     "telepath>=0.3.1",
 ]
 
+[project.urls]
+Homepage = "https://github.com/WesleyJohnson/django-react-forms"
+Repository = "https://github.com/WesleyJohnson/django-react-forms"
+Issues = "https://github.com/WesleyJohnson/django-react-forms/issues"
+Changelog = "https://github.com/WesleyJohnson/django-react-forms/blob/main/CHANGELOG.md"
+
 [project.optional-dependencies]
 quill = ["django-quill-editor>=0.1.40", "nh3>=0.2.14"]
 

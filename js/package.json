@@ -4,6 +4,15 @@
     "description": "Render Django forms as React Hook Form forms. Django declares the form; React draws it.",
     "license": "MIT",
     "author": "Wesley Johnson",
+    "homepage": "https://github.com/WesleyJohnson/django-react-forms#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/WesleyJohnson/django-react-forms.git",
+        "directory": "js"
+    },
+    "bugs": {
+        "url": "https://github.com/WesleyJohnson/django-react-forms/issues"
+    },
     "keywords": [
         "django",
         "react",

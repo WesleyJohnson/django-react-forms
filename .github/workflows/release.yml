@@ -1,0 +1,66 @@
+name: Release
+
+# Runs when a version tag is pushed (git tag v0.1.0 && git push --tags). See "Releasing" in
+# CONTRIBUTING.md for the one-time setup (PyPI trusted publisher, NPM_TOKEN secret).
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: The tag matches both packages' versions
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          python_version=$(sed -nE 's/^version = "(.*)"/\1/p' python/pyproject.toml | head -1)
+          js_version=$(node -p "require('./js/package.json').version")
+          echo "tag=$version python=$python_version js=$js_version"
+          # Final releases only: a prerelease is spelled differently in PEP 440 and semver
+          test "$python_version" = "$version" && test "$js_version" = "$version"
+      - name: Packaged README/LICENSE match the root copies
+        run: for d in python js; do diff README.md $d/README.md && diff LICENSE $d/LICENSE; done
+
+  pypi:
+    needs: check
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write # PyPI trusted publishing: no token stored anywhere
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install build twine
+      - run: python -m build
+        working-directory: python
+      - run: twine check dist/*
+        working-directory: python
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: python/dist
+
+  npm:
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # lets npm record provenance for the published package
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      - run: npm ci
+        working-directory: js
+      - run: npm test
+        working-directory: js
+      - run: npm run build
+        working-directory: js
+      - run: npm publish --provenance --access public
+        working-directory: js
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

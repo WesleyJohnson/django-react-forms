@@ -1,5 +1,7 @@
 # django-react-forms
 
+[![CI](https://github.com/WesleyJohnson/django-react-forms/actions/workflows/ci.yml/badge.svg)](https://github.com/WesleyJohnson/django-react-forms/actions/workflows/ci.yml)
+
 Draw Django forms with React. **Django declares the form; React draws it.**
 
 You write an ordinary Django `Form` or `ModelForm`. `django-react-forms` serializes it (with
