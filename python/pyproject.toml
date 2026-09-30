@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "django-react-forms"
-version = "0.1.0"
+version = "0.1.1"
 description = "Render Django forms as React Hook Form forms. Django declares the form; React draws it."
 readme = "README.md"
 license = "MIT"

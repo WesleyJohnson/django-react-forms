@@ -115,3 +115,34 @@ class TagListFieldTests(SimpleTestCase):
         from django import forms
 
         self.assertIsInstance(TagListField().formfield(form_class=forms.JSONField), forms.JSONField)
+
+
+class DrawnByDjangoTests(SimpleTestCase):
+    """Where React isn't drawing the form (the Django admin, ``form.as_p``), the widget is text."""
+
+    def test_the_widget_renders_as_a_text_input_holding_the_json_list(self):
+        html = str(_form({'tags': ['Art', 'Music']})['tags'])
+        self.assertIn('<input type="text" name="tags"', html)
+        self.assertIn('value="[&quot;Art&quot;, &quot;Music&quot;]"', html)
+
+    def test_an_unbound_form_with_initial_tags_renders(self):
+        html = TagForm(initial={'tags': ['Art']}, fetch_url='/x')['tags'].as_widget()
+        self.assertIn('value="[&quot;Art&quot;]"', html)
+
+    def test_text_posted_back_from_a_plain_django_form_is_read(self):
+        form = _form(QueryDict('tags=%5B%22Art%22%2C+%22Music%22%5D'))
+        self.assertTrue(form.is_valid(), form.errors)
+        self.assertEqual(form.cleaned_data['tags'], ['Art', 'Music'])
+
+    def test_any_react_component_widget_renders(self):
+        from django_react_forms.widgets import ReactComponentWidget
+
+        html = ReactComponentWidget(component='Rating').render('score', '4')
+        self.assertIn('<input type="text" name="score" value="4">', html)
+
+    def test_a_model_field_of_tags_renders_in_a_model_form(self):
+        # What the admin does: the model field's own form field, drawn by Django
+        from django_react_forms.models import TagListField
+
+        widget = TagListField().formfield().widget
+        self.assertIn('<input type="text"', widget.render('interests', '["x"]'))

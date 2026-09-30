@@ -7,11 +7,17 @@ from django_react_forms.adapters import WidgetAdapter
 
 
 @register(adapter=WidgetAdapter())
-class ReactComponentWidget(widgets.Widget):
+class ReactComponentWidget(widgets.Input):
     """
     A widget drawn by a React component registered under ``component`` (see ``registerWidget`` in
     the JS package). ``props`` are passed to that component along with the field's value/onChange.
+
+    Where React isn't drawing the form (the Django admin, ``{{ form.as_p }}``) Django renders it
+    as a plain text input holding the field's value, so the form still works there.
     """
+
+    input_type = 'text'
+    template_name = 'django/forms/widgets/text.html'
 
     def __init__(self, attrs=None, *, component, props=None):
         self.component = component
@@ -27,7 +33,10 @@ class ReactComponentWidget(widgets.Widget):
 
 
 class TagInput(ReactComponentWidget):
-    """Pill/badge input for a list of free-text tags. Pair it with ``TagField``."""
+    """
+    Pill/badge input for a list of free-text tags. Pair it with ``TagField``. Drawn by Django
+    instead (the admin), it is a text input holding the tags as a JSON list: ``["art", "music"]``.
+    """
 
     component_name = 'TagInput'
 
