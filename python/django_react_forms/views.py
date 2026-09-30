@@ -20,14 +20,17 @@ class ReactFormViewMixin:
     Browsers asking for HTML get Django's normal behavior, so a view keeps working without JS.
 
     Hooks: ``save_form``, ``get_success_data``, ``get_success_message``,
-    ``get_success_redirect``.
+    ``get_success_redirect``, ``invalid_json_response``.
     ``pass_request_to_form = True`` adds ``request`` to the form's kwargs.
     """
 
     pass_request_to_form = False
 
     def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
+        # A view that isn't a FormMixin view (say a TemplateView that builds its own form) has
+        # no base kwargs; it can still call this for the request-body handling below
+        base = getattr(super(), 'get_form_kwargs', None)
+        kwargs = base() if base else {}
         if self.pass_request_to_form:
             kwargs['request'] = self.request
 
@@ -50,6 +53,10 @@ class ReactFormViewMixin:
     def form_invalid(self, form):
         if not self.wants_json():
             return super().form_invalid(form)
+        return self.invalid_json_response(form)
+
+    def invalid_json_response(self, form):
+        """HTTP 400 with the form's errors, keyed the way the client looks them up."""
         errors = form.errors
         if form.prefix:
             errors = {

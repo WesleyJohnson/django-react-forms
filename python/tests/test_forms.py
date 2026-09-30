@@ -8,7 +8,7 @@ import json
 
 from django import forms
 from django.contrib.auth.models import Group
-from django.http import QueryDict
+from django.http import JsonResponse, QueryDict
 from django.template import TemplateDoesNotExist
 from django.test import RequestFactory, SimpleTestCase, TestCase
 from django.utils.translation import gettext_lazy as _
@@ -373,6 +373,34 @@ class ViewMixinTests(SimpleTestCase):
         # There's no template in this test, so reaching the normal HTML response is what raises
         with self.assertRaises(TemplateDoesNotExist):
             NameView.as_view()(request).render()
+
+
+class NonFormMixinViewTests(SimpleTestCase):
+    def test_a_view_that_builds_its_own_form_still_gets_the_request_body_handling(self):
+        from django.views.generic import TemplateView
+
+        class OwnFormView(ReactFormViewMixin, TemplateView):
+            pass_request_to_form = True
+
+        request = RequestFactory().post(
+            '/x', data='{"name": "ok"}', content_type='application/json'
+        )
+        view = OwnFormView()
+        view.setup(request)
+        kwargs = view.get_form_kwargs()
+        self.assertEqual(kwargs['data'], {'name': 'ok'})
+        self.assertIs(kwargs['request'], request)
+
+    def test_invalid_json_response_is_a_hook(self):
+        class Custom(NameView):
+            def invalid_json_response(self, form):
+                return JsonResponse({'custom': True}, status=422)
+
+        request = RequestFactory().post(
+            '/x', data='{}', content_type='application/json', HTTP_ACCEPT='application/json'
+        )
+        response = Custom.as_view()(request)
+        self.assertEqual(response.status_code, 422)
 
 
 class ModelViewTests(TestCase):
