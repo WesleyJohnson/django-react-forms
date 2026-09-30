@@ -14,6 +14,9 @@ _JSON_SCRIPT_ESCAPES = {
 }
 
 
-def json_for_script(value):
-    """JSON for embedding in an HTML <script> element without letting the data break out of it."""
-    return mark_safe(json.dumps(value).translate(_JSON_SCRIPT_ESCAPES))
+def json_for_script(value, cls=None):
+    """
+    JSON for embedding in an HTML <script> element without letting the data break out of it.
+    ``cls`` is an optional ``json.JSONEncoder`` for values the standard one can't write.
+    """
+    return mark_safe(json.dumps(value, cls=cls).translate(_JSON_SCRIPT_ESCAPES))

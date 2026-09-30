@@ -178,6 +178,16 @@ class Dashboard(ReactRenderableMixin):
 registerComponent('Dashboard', ({ title }) => <h1>{title}</h1>);
 ```
 
+Or skip the Python class and mount a registered component straight from a template. Props are plain
+JSON (a value with a `to_react_representation()` method is written as whatever that returns):
+
+```django
+{% load dreact %}
+{% react_component "Badge" label="Active" count=member.badge_count %}
+```
+
+From a view or your own tag, use `django_react_forms.components.render_component(name, props)`.
+
 ## Behavior worth knowing
 
 - **Fields in no group are still drawn**, after the groups. Nothing is silently dropped. To hide a

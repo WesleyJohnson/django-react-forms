@@ -403,6 +403,48 @@ class NonFormMixinViewTests(SimpleTestCase):
         self.assertEqual(response.status_code, 422)
 
 
+class RenderComponentTests(SimpleTestCase):
+    def data(self, html):
+        return json.loads(
+            html.split('data-dreact-for=', 1)[1].split('>', 1)[1].split('</script>', 1)[0]
+        )
+
+    def test_mounts_a_named_component_with_plain_props(self):
+        from django_react_forms.components import render_component
+
+        html = str(render_component('Badge', {'label': 'Active', 'count': 3}))
+        self.assertIn('data-dreact-mount', html)
+        self.assertEqual(
+            self.data(html),
+            {'_type': 'dreact.Bridge', '_args': ['Badge', {'label': 'Active', 'count': 3}]},
+        )
+
+    def test_values_with_a_react_representation_are_written_as_it(self):
+        from django_react_forms.components import render_component
+
+        class Person:
+            def to_react_representation(self):
+                return {'name': 'Ada'}
+
+        html = render_component('Card', {'person': Person()})
+        self.assertEqual(self.data(html)['_args'][1], {'person': {'name': 'Ada'}})
+
+    def test_props_cannot_break_out_of_the_script(self):
+        from django_react_forms.components import render_component
+
+        html = str(render_component('Badge', {'label': '</script><script>alert(1)</script>'}))
+        self.assertEqual(html.count('</script>'), 1)
+        self.assertEqual(self.data(html)['_args'][1]['label'], '</script><script>alert(1)</script>')
+
+    def test_the_template_tag(self):
+        from django.template import Context, Template
+
+        html = Template(
+            '{% load dreact %}{% react_component "Badge" label=label count=3 %}'
+        ).render(Context({'label': 'Active'}))
+        self.assertEqual(self.data(html)['_args'], ['Badge', {'label': 'Active', 'count': 3}])
+
+
 class ModelViewTests(TestCase):
     def test_a_valid_model_form_saves_and_returns_the_pk(self):
         from django.views.generic import CreateView
