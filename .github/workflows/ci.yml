@@ -12,9 +12,14 @@ jobs:
       fail-fast: false
       matrix:
         python: ['3.10', '3.11', '3.12', '3.13']
-        django: ['4.2', '5.2']
+        django: ['4.2', '5.2', '6.0', '6.1']
         exclude:
           - { python: '3.13', django: '4.2' } # Django 4.2 doesn't support Python 3.13
+          # Django 6 needs Python 3.12 or newer
+          - { python: '3.10', django: '6.0' }
+          - { python: '3.11', django: '6.0' }
+          - { python: '3.10', django: '6.1' }
+          - { python: '3.11', django: '6.1' }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -22,7 +27,7 @@ jobs:
           python-version: ${{ matrix.python }}
       - run: pip install "Django==${{ matrix.django }}.*" "telepath>=0.3.1" django-quill-editor "nh3>=0.2.14"
       - name: Packaged README/LICENSE match the root copies
-        run: diff README.md python/README.md && diff LICENSE python/LICENSE
+        run: for d in python js; do diff README.md $d/README.md && diff LICENSE $d/LICENSE; done
       - run: python -m django test tests
         working-directory: python
         env:

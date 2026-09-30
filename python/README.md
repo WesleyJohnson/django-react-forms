@@ -32,7 +32,7 @@ pip install django-react-forms          # add [quill] for rich text
 npm install django-react-forms react react-dom react-hook-form
 ```
 
-Requires Python 3.10+, Django 4.2+, React 18.
+Requires Python 3.10+, Django 4.2 to 6.1 (Django 6 needs Python 3.12+), React 18.
 
 ## Quick start
 
@@ -84,6 +84,13 @@ mountOnReady();
 That's the whole integration. `{{ form }}` (or `{{ form.as_react }}`) emits a placeholder and the
 form's data as a `<script type="application/json">`; `mountOnReady()` finds those and draws the
 forms. If you insert HTML later (say from `fetch`), call `mountAll()` again.
+
+## Examples
+
+- [`examples/basic`](examples/basic) - a small Django project with the default widgets. Run it to
+  see groups, a conditional field, tags, files and rich text.
+- [`examples/shadcn`](examples/shadcn) - the same forms drawn with shadcn/ui and Tailwind, to show
+  how `registerWidget` and `registerSlot` fit a design system.
 
 ## Rich text (Quill)
 
