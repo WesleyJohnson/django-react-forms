@@ -444,6 +444,43 @@ class RenderComponentTests(SimpleTestCase):
         ).render(Context({'label': 'Active'}))
         self.assertEqual(self.data(html)['_args'], ['Badge', {'label': 'Active', 'count': 3}])
 
+    def render_tag(self, source, **context):
+        from django.template import Context, Template
+
+        return Template('{% load dreact %}' + source).render(Context(context))
+
+    def test_the_template_tag_merges_dicts_of_props_then_named_props_win(self):
+        html = self.render_tag(
+            '{% react_component name defaults overrides title="Hi" %}',
+            name='Card',
+            defaults={'title': 'Default', 'size': 'sm'},
+            overrides={'size': 'lg'},
+        )
+        self.assertEqual(self.data(html)['_args'], ['Card', {'title': 'Hi', 'size': 'lg'}])
+
+    def test_the_template_tag_writes_a_missing_variable_as_null(self):
+        html = self.render_tag('{% react_component "Card" missing_dict title=missing %}')
+        self.assertEqual(self.data(html)['_args'], ['Card', {'title': None}])
+
+    def test_the_template_tag_allows_a_prop_called_props(self):
+        html = self.render_tag('{% react_component "Card" props=items %}', items=[1, 2])
+        self.assertEqual(self.data(html)['_args'], ['Card', {'props': [1, 2]}])
+
+    def test_the_template_tag_can_store_the_html(self):
+        html = self.render_tag('{% react_component "Badge" label="x" as mount %}[{{ mount }}]')
+        self.assertTrue(html.startswith('[<'))
+        self.assertEqual(self.data(html)['_args'], ['Badge', {'label': 'x'}])
+
+    def test_the_template_tag_rejects_bad_arguments(self):
+        from django.template import TemplateSyntaxError
+
+        with self.assertRaises(TemplateSyntaxError):
+            self.render_tag('{% react_component %}')
+        with self.assertRaises(TemplateSyntaxError):
+            self.render_tag('{% react_component "Card" title="Hi" extra %}')
+        with self.assertRaises(TemplateSyntaxError):
+            self.render_tag('{% react_component "Card" items %}', items=[1, 2])
+
 
 class ModelViewTests(TestCase):
     def test_a_valid_model_form_saves_and_returns_the_pk(self):

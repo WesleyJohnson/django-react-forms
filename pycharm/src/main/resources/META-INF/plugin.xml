@@ -1,0 +1,26 @@
+<idea-plugin>
+  <id>com.github.wesleyjohnson.django-react-forms</id>
+  <name>django-react-forms</name>
+  <vendor url="https://github.com/WesleyJohnson/django-react-forms">django-react-forms</vendor>
+  <description><![CDATA[
+    Navigation for <a href="https://github.com/WesleyJohnson/django-react-forms">django-react-forms</a>:
+    Cmd/Ctrl+click a component key to open the React component registered under it.
+    <ul>
+      <li>Python: <code>component = '...'</code> on a class, and <code>component='...'</code> arguments.</li>
+      <li>Templates: <code>{% react_component "..." %}</code>.</li>
+    </ul>
+    Keys are read from <code>registerComponent(...)</code> and <code>registerWidget(...)</code> calls
+    in the project's JavaScript and TypeScript.
+  ]]></description>
+
+  <depends>com.intellij.modules.platform</depends>
+  <depends>PythonCore</depends>
+  <depends>JavaScript</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <psi.referenceContributor language="Python"
+        implementation="com.github.wesleyjohnson.djangoreactforms.ComponentKeyReferenceContributor"/>
+    <gotoDeclarationHandler
+        implementation="com.github.wesleyjohnson.djangoreactforms.ReactComponentTagGotoDeclarationHandler"/>
+  </extensions>
+</idea-plugin>

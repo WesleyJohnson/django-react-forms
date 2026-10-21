@@ -193,9 +193,18 @@ JSON (a value with a `to_react_representation()` method is written as whatever t
 ```django
 {% load dreact %}
 {% react_component "Badge" label="Active" count=member.badge_count %}
+{% react_component block.component_name block.props %}
+{% react_component "Card" defaults title="Hi" as card_html %}
 ```
 
+After the name come any dicts of props, merged in order, then `name=value` props, which win. A
+variable that doesn't exist is written as `null`. `as <variable>` stores the HTML instead of
+writing it.
+
 From a view or your own tag, use `django_react_forms.components.render_component(name, props)`.
+
+PyCharm users can Cmd/Ctrl+click from a component key (in Python or in `{% react_component %}`) to
+the React component with the plugin in [`pycharm/`](pycharm/README.md).
 
 ## Behavior worth knowing
 

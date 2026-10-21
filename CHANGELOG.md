@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.2 - 2026-10-20
+
+- `{% react_component %}` takes dicts of props after the name (`{% react_component name props %}`),
+  merged in order before any `name=value` props. A variable that doesn't exist is now `null`
+  instead of an empty string.
+- A PyCharm plugin (`pycharm/`): Cmd/Ctrl+click a component key in Python or in
+  `{% react_component %}` to open the React component registered under it.
+
 ## 0.1.1 - 2026-09-30
 
 - Fixed: a `ReactComponentWidget` (including `TagInput`, so any `TagListField`) failed to render
